@@ -7,6 +7,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.viewsets import ViewSet , ModelViewSet
 from airplane.models import *
 from airplane.serializers import *
+from rest_framework.permissions import IsAuthenticated
+from .permissions import IsPilot
+
 
 
 class PassengersModelviewset(ModelViewSet):
@@ -69,3 +72,13 @@ class EnrollAttendantApi(APIView):
             return Response({"message": "error does not exists"}, status=status.HTTP_404_NOT_FOUND)
         
         return Response({"message": "attendant added"}, status=status.HTTP_200_OK)
+    
+
+class CreateFlightApi(APIView):
+    permission_classes = [IsAuthenticated , IsPilot]
+    def post(self , request):
+        serializer = FlightSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        pilot = Pilot.objects.get(user=request.user)
+        flight = serializer.save(pilot=pilot)
+        return Response({"message" : "successfully created"} , status=status.HTTP_201_CREATED)

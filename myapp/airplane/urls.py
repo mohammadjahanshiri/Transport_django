@@ -17,4 +17,5 @@ urlpatterns = [
     path("api/", include(router.urls)),
     path("api/add_passenger/" , EnrollPassengersApi.as_view()),
     path("api/add_attendant/" , EnrollAttendantApi.as_view()),
+    path("api/createflight/", CreateFlightApi.as_view())
 ]

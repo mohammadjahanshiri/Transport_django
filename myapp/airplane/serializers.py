@@ -54,3 +54,8 @@ class AirportSerializer(serializers.ModelSerializer):
 
     def get_flight(self , obj):
         return obj.flight.values()
+    
+class FlightSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Flight
+        fields = ["airport_origin","airport_destination" , "airplane"]
